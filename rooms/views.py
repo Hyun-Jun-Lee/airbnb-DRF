@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from .models import Room
-from .serializers import RoomSerializer, BigRoomSerializer
+from .serializers import RoomSerializer
 from rooms import serializers
 
 # Create your views here.
@@ -34,4 +34,4 @@ class ListRoomsView(ListAPIView):
 class SeeRoomView(RetrieveAPIView):
     
     queryset = Room.objects.all()
-    serializer_class = BigRoomSerializer
+    serializer_class = RoomSerializer
