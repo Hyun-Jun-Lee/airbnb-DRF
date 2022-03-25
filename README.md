@@ -6,7 +6,7 @@ REST API of the Airbnb Clone using Django REST Framework
 
 - [x] List Rooms
 - [x] See Room
-- [ ] Create Room
+- [x] Create Room
 - [ ] Edit Room
 - [ ] Delete Room
 - [ ] Filter Rooms
