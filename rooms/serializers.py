@@ -9,7 +9,27 @@ class ReadRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ("__all__")
+
+class WriteRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        exclude = ("user","modified","created")
         
+    def validate(self, data):
+        if self.instance:
+            check_in = data.get("check_in", self.instance.check_in)
+            check_out = data.get("check_out", self.instance.check_out)
+        else:
+            check_in = data.get("check_in")
+            check_out = data.get("check_out")
+        if check_in == check_out:
+            raise serializers.ValidationError("Check_in & Check_out Error")
+        return data
+
+
+
+
+'''       
 class WriteRoomSerializer(serializers.Serializer):
     
     name = serializers.CharField(max_length=140)
@@ -55,4 +75,4 @@ class WriteRoomSerializer(serializers.Serializer):
         )
         instance.save()
         return instance
-            
+'''           
