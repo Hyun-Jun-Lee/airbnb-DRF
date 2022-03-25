@@ -26,3 +26,16 @@ class WriteRoomSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         return Room.objects.create(**validated_data)
+    
+    def validate(self,data):
+        # instance가 없다는 말은 update가 아니라 create임을 의미
+        if not self.instance:
+            check_in = data.get("check_in")
+            check_out = data.get("check_out")
+            if check_in == check_out:
+                raise serializers.ValidationError("Check_in & Check_out Error")
+        return data
+    
+    def update(self, instance, validated_data):
+        pass
+            
