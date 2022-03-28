@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework import permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
@@ -11,31 +13,26 @@ from rooms import serializers
 
 # Create your views here.
 
+class RoomViewSet(ModelViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    
+    # auth 권한
+    def get_permissions(self):
+        if self.action == "list" or self.action == "retrieve":
+            permission_classes = [permissions.AllowAny]
+        elif self.action == "create":
+            permission_classes = [permissions.IsAuthenticated]
+        return super().get_permissions()
+
     
 class SeeRoomView(RetrieveAPIView):
     
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
  
-    
-class RoomsView(APIView):
-    def get(self, request):
-        rooms = Room.objects.all()[:5]
-        serializer = RoomSerializer(rooms, many=True).data
-        return Response(serializer)
 
-    def post(self, request):
-        if not request.user.is_authenticated:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        serializer = RoomSerializer(data=request.data)
-        if serializer.is_valid():
-            room = serializer.save(user=request.user)
-            room_serializer = RoomSerializer(room).data
-            return Response(data=room_serializer, status=status.HTTP_200_OK)
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+'''    
 class RoomView(APIView):
     
     def get_room(self, pk):
@@ -78,7 +75,7 @@ class RoomView(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
     
-'''    
+
 @api_view(["GET", "POST"])
 def rooms_view(request):
     if request.method == "GET":
