@@ -4,6 +4,8 @@ REST API of the Airbnb Clone using Django REST Framework
 
 ### API Actions
 
+- [x] Login (JWT)
+- [x] JWT Authentication
 - [x] List Rooms
 - [x] See Room
 - [x] Create Room
@@ -15,6 +17,5 @@ REST API of the Airbnb Clone using Django REST Framework
 - [x] Create Account
 - [ ] Filter Rooms
 - [ ] Search By Coords
-- [ ] Login
 - [ ] Add Room to Favourites
 - [ ] See Favs
